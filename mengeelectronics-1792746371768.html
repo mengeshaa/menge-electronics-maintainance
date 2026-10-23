@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menge Electronics Maintenance</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #c9d1d9;
+            --text-heading: #ffffff;
+            --accent-color: #00f2fe;
+            --accent-secondary: #4facfe;
+            --border-color: #30363d;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #24292e;
+            --text-heading: #000000;
+            --accent-color: #0052d4;
+            --accent-secondary: #4364f7;
+            --border-color: #e1e4e8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .controls {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-ctrl {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .btn-ctrl:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            font-size: 1.5rem;
+        }
+
+        /* Filter Controls */
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+        }
+
+        /* Service & Device Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card h3 {
+            color: var(--text-heading);
+            margin-bottom: 10px;
+        }
+
+        .card .price {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* Form & Estimator Styles */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-heading);
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        .estimate-result {
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--bg-color);
+            border-left: 4px solid var(--accent-color);
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="controls">
+            <button class="btn-ctrl" onclick="toggleTheme()">Dark/Light</button>
+            <button class="btn-ctrl" onclick="toggleLanguage()">EN / AM</button>
+        </div>
+        <h1 id="title">Menge Electronics Maintenance</h1>
+        <p id="subtitle">የተለያዩ የኤሌክትሮኒክስ እቃዎችን በጥራት እና በአስተማማኝነት እንጠግናለን!</p>
+    </header>
+
+    <div class="container">
+
+        <!-- 1. የምንሰጣቸው አገልግሎቶች -->
+        <section>
+            <h2 id="sec-services">የጥገና አገልግሎቶች</h2>
+            <div class="grid">
+                <div class="card">
+                    <div>
+                        <h3 id="srv1-title">የስክሪን ቅያሬ (Screen Replacement)</h3>
+                        <p id="srv1-desc">ለተሰበሩ፣ ለጨለሙ ወይም ንክኪ ላላጡ ስልኮች ኦሪጅናል ስክሪን መቀየር።</p>
+                    </div>
+                    <div class="price">ተመጣጣኝ ዋጋ</div>
+                </div>
+                <div class="card">
+                    <div>
+                        <h3 id="srv2-title">ባትሪ እና ቻርጀር ፖርት (Battery & Charging)</h3>
+                        <p id="srv2-desc">ቻርጅ የማያደርጉ ፖርቶችን ማስተካከል እና የቆዩ ባትሪዎችን በጥራት መቀየር።</p>
+                    </div>
+                    <div class="price">ፈጣን አገልግሎት</div>
+                </div>
+                <div class="card">
+                    <div>
+                        <h3 id="srv3-title">ሶፍትዌር እና FRP Bypass</h3>
+                        <p id="srv3-desc">ስልክ ሲቆልፍባችሁ፣ ሲዘጋ ወይም ሲቀዘቅዝ ሶፍትዌር መጫን እና አካውንት መክፈት።</p>
+                    </div>
+                    <div class="price">በታማኝነት</div>
+                </div>
+                <div class="card">
+                    <div>
+                        <h3 id="srv4-title">የማዘርቦርድ ጥገና (Motherboard Repair)</h3>
+                        <p id="srv4-desc">ውሃ የገባባቸው፣ Short ያደረጉ ወይም ሙሉ በሙሉ የማይበሩ ስልኮችን ማዳን።</p>
+                    </div>
+                    <div class="price">በሙያተኞች</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. የምንጠግናቸው የኤሌክትሮኒክስ ዓይነቶች -->
+        <section>
+            <h2 id="sec-brands">የምንጠግናቸው ብራንዶችና መሳሪያዎች</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterBrands('all')">ሁሉም (All)</button>
+                <button class="filter-btn" onclick="filterBrands('tecno')">Tecno / Infinix / Itel</button>
+                <button class="filter-btn" onclick="filterBrands('samsung')">Samsung</button>
+                <button class="filter-btn" onclick="filterBrands('iphone')">iPhone</button>
+                <button class="filter-btn" onclick="filterBrands('laptop')">Laptops / PCs</button>
+            </div>
+            
+            <div class="grid" id="brand-grid">
+                <div class="card brand-item tecno">
+                    <h3>Tecno & Infinix</h3>
+                    <p>Spark, Camon, Hot, Note ተከታታይ ስልኮች ስክሪን፣ ባትሪ እና ሶፍትዌር ጥገና።</p>
+                </div>
+                <div class="card brand-item samsung">
+                    <h3>Samsung Galaxy</h3>
+                    <p>A-series, S-series እና M-series ኦሪጅናል OLED/AMOLED ስክሪኖችና ቻርጅንግ ፖርት።</p>
+                </div>
+                <div class="card brand-item iphone">
+                    <h3>Apple iPhone</h3>
+                    <p>ከ iPhone 6 እስከ ዘመናዊዎቹ ሞዴሎች ባትሪ፣ ስክሪን እና የጀርባ መስታወት ቅያሬ።</p>
+                </div>
+                <div class="card brand-item laptop">
+                    <h3>Laptops & Desktops</h3>
+                    <p>HP, Dell, Lenovo, ASUS የላፕቶፕ ኪቦርድ፣ ስክሪን፣ RAM/SSD ማሳደግ እና የዊንዶውስ ጭነት።</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. የዋጋ እና ጊዜ መገመቻ Calculator -->
+        <section>
+            <h2 id="sec-calc">የጥገና ዋጋ እና ጊዜ መገመቻ (Cost Estimator)</h2>
+            <div class="form-group">
+                <label id="lbl-devtype">የመሳሪያው ዓይነት (Device Type):</label>
+                <select id="calc-device" onchange="calculateEstimate()">
+                    <option value="tecno">Tecno / Infinix / Itel</option>
+                    <option value="samsung">Samsung</option>
+                    <option value="iphone">iPhone</option>
+                    <option value="laptop">Laptop / PC</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label id="lbl-issue">የብልሽቱ ዓይነት (Issue Type):</label>
+                <select id="calc-issue" onchange="calculateEstimate()">
+                    <option value="screen">የስክሪን ብልሽት (Screen Replacement)</option>
+                    <option value="battery">የባትሪ / ቻርጀር ፖርት (Battery/Charging)</option>
+                    <option value="software">የሶፍትዌር ችግር (Software / FRP)</option>
+                    <option value="board">የማዘርቦርድ / የውሃ አደጋ (Motherboard Issue)</option>
+                </select>
+            </div>
+            <div class="estimate-result" id="estimate-output">
+                <strong>የሚወስደው ጊዜ፡</strong> 1 - 2 ሰዓት <br>
+                <strong>የግምት ዋጋ፡</strong> እንደ ስልኩ ሞዴል ይወሰናል (ቀራርበው ያናግሩን)
+            </div>
+        </section>
+
+        <!-- 4. የጥገና ቀጠሮ እና ጥያቄ መላኪያ -->
+        <section>
+            <h2 id="sec-contact">ጥያቄ ወይም የጥገና ቀጠሮ ይላኩ</h2>
+            <form onsubmit="sendTelegram(event)">
+                <div class="form-group">
+                    <label id="lbl-name">ስምዎት (Your Name):</label>
+                    <input type="text" id="cust-name" required placeholder="ምሳሌ፡ መንገሻ ደሚስ">
+                </div>
+                <div class="form-group">
+                    <label id="lbl-phone">ስልክ ቁጥር (Phone Number):</label>
+                    <input type="tel" id="cust-phone" required placeholder="0912345678">
+                </div>
+                <div class="form-group">
+                    <label id="lbl-model">የስልኩ / የመሳሪያው ሞዴል (Device Model):</label>
+                    <input type="text" id="cust-model" placeholder="ምሳሌ፡ Tecno Spark 30C / Samsung A12">
+                </div>
+                <div class="form-group">
+                    <label id="lbl-desc">የብልሽቱ መግለጫ (Issue Description):</label>
+                    <textarea id="cust-msg" rows="4" placeholder="የደረሰበትን ብልሽት በአጭሩ ይግለጹ..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="btn-send">በቴሌግራም ጥያቄ ላክ (Send via Telegram)</button>
+            </form>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Menge Electronics Maintenance | ደብረ ብርሃን / መሃል ሜዳ</p>
+        <p><a href="https://t.me/DigitalSoul" target="_blank">Telegram: @DigitalSoul</a></p>
+    </footer>
+
+    <script>
+        // Language State & Content
+        let currentLang = 'am';
+        const langData = {
+            am: {
+                title: "Menge Electronics Maintenance",
+                subtitle: "የተለያዩ የኤሌክትሮኒክስ እቃዎችን በጥራት እና በአስተማማኝነት እንጠግናለን!",
+                secServices: "የጥገና አገልግሎቶች",
+                secBrands: "የምንጠግናቸው ብራንዶችና መሳሪያዎች",
+                secCalc: "የጥገና ዋጋ እና ጊዜ መገመቻ (Cost Estimator)",
+                secContact: "ጥያቄ ወይም የጥገና ቀጠሮ ይላኩ",
+                lblDevtype: "የመሳሪያው ዓይነት (Device Type):",
+                lblIssue: "የብልሽቱ ዓይነት (Issue Type):",
+                lblName: "ስምዎት (Your Name):",
+                lblPhone: "ስልክ ቁጥር (Phone Number):",
+                lblModel: "የስልኩ / የመሳሪያው ሞዴል (Device Model):",
+                lblDesc: "የብልሽቱ መግለጫ (Issue Description):",
+                btnSend: "በቴሌግራም ጥያቄ ላክ (Send via Telegram)"
+            },
+            en: {
+                title: "Menge Electronics Maintenance",
+                subtitle: "Professional & Reliable Electronics Repair Services!",
+                secServices: "Our Repair Services",
+                secBrands: "Supported Brands & Devices",
+                secCalc: "Repair Cost & Time Estimator",
+                secContact: "Book a Repair or Send Inquiry",
+                lblDevtype: "Device Type:",
+                lblIssue: "Issue Type:",
+                lblName: "Your Name:",
+                lblPhone: "Phone Number:",
+                lblModel: "Device Model:",
+                lblDesc: "Issue Description:",
+                btnSend: "Send via Telegram"
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'am' ? 'en' : 'am';
+            const data = langData[currentLang];
+            document.getElementById('title').innerText = data.title;
+            document.getElementById('subtitle').innerText = data.subtitle;
+            document.getElementById('sec-services').innerText = data.secServices;
+            document.getElementById('sec-brands').innerText = data.secBrands;
+            document.getElementById('sec-calc').innerText = data.secCalc;
+            document.getElementById('sec-contact').innerText = data.secContact;
+            document.getElementById('lbl-devtype').innerText = data.lblDevtype;
+            document.getElementById('lbl-issue').innerText = data.lblIssue;
+            document.getElementById('lbl-name').innerText = data.lblName;
+            document.getElementById('lbl-phone').innerText = data.lblPhone;
+            document.getElementById('lbl-model').innerText = data.lblModel;
+            document.getElementById('lbl-desc').innerText = data.lblDesc;
+            document.getElementById('btn-send').innerText = data.btnSend;
+        }
+
+        // Theme Switcher
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'light') {
+                body.removeAttribute('data-theme');
+            } else {
+                body.setAttribute('data-theme', 'light');
+            }
+        }
+
+        // Brand Filter Function
+        function filterBrands(category) {
+            const items = document.querySelectorAll('.brand-item');
+            const btns = document.querySelectorAll('.filter-btn');
+            
+            btns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Estimator Calculation
+        function calculateEstimate() {
+            const device = document.getElementById('calc-device').value;
+            const issue = document.getElementById('calc-issue').value;
+            const output = document.getElementById('estimate-output');
+
+            let time = "1 - 2 ሰዓት";
+            let note = "እንደ ሞዴሉ ይለያያል";
+
+            if (issue === 'screen') {
+                time = "30 ደቂቃ - 1:30 ሰዓት";
+            } else if (issue === 'software') {
+                time = "20 - 45 ደቂቃ";
+            } else if (issue === 'board') {
+                time = "1 - 2 ቀን (ዝርዝር ምርመራ ያስፈልገዋል)";
+            }
+
+            if (currentLang === 'en') {
+                output.innerHTML = `<strong>Estimated Time:</strong> ${time}<br><strong>Note:</strong> Exact price depends on specific model parts.`;
+            } else {
+                output.innerHTML = `<strong>የሚወስደው ግምታዊ ጊዜ፡</strong> ${time}<br><strong>ማስታወሻ፡</strong> ትክክለኛ ዋጋ እንደ እቃው እና ሞዴሉ ይወሰናል፤ በአካል ወይም በስልክ ያናግሩን።`;
+            }
+        }
+
+        // Telegram Direct Link Integration
+        function sendTelegram(e) {
+            e.preventDefault();
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const model = document.getElementById('cust-model').value;
+            const msg = document.getElementById('cust-msg').value;
+
+            const text = `ሰላም Menge Electronics!%0A%0A*የጥገና ጥያቄ፡*%0A- *ስም:* ${name}%0A- *ስልክ:* ${phone}%0A- *ሞዴል:* ${model}%0A- *የብልሽት መግለጫ:* ${msg}`;
+            
+            // Telegram URL scheme
+            window.open(`https://t.me/DigitalSoul?text=${text}`, '_blank');
+        }
+    </script>
+</body>
+</html>
